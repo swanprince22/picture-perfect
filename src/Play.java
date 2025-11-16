@@ -1,14 +1,17 @@
 import java.awt.*;
 import javax.swing.*;
+import java.util.*;
 
 public class Play extends Design {
     JLabel start;
     Card mainFrame;
     Utilities utilities;
-    Design puzzleImage;
-    Design one, two, three, four, five, six, seven, eight, nine;
+    Design[] puzzlePieces;
+    private int[] order;
+    private int numPieces = 9;
+    private LinkedList imageList;
 
-    public Play(Card mainFrame){
+    public Play(Card mainFrame) {
         super("/media/img/background.png");
         this.mainFrame = mainFrame;
 
@@ -16,37 +19,86 @@ public class Play extends Design {
         utilities.displayWhitePanel();
         this.add(utilities);
 
-        displayGrid();
-        
         this.setVisible(true);
     }
 
-    public void displayGrid(){
-        one = new Design("/media/img/1.png");
-        two = new Design("/media/img/2.png");
-        three = new Design("/media/img/3.png");
-        four = new Design("/media/img/4.png");
-        five = new Design("/media/img/5.png");
-        six = new Design("/media/img/6.png");
-        seven = new Design("/media/img/7.png");
-        eight = new Design("/media/img/8.png");
-        
-        JPanel nine = new JPanel();
-        nine.setBackground(Color.WHITE);
+     public void startGame(){
+        order = generateValidOrder();
+        createPuzzleImages(order);
+        displayPuzzle();
+    }
+
+    private int[] generateValidOrder() {
+        Random r = new Random();
+        int[] tempOrder = new int[numPieces];
+        boolean valid;
+
+        do {
+            for (int i = 0; i < numPieces; i++) {
+                tempOrder[i] = i;
+            }
+
+            for (int i = numPieces - 1; i > 0; i--) {
+                int j = r.nextInt(i + 1);
+                int temp = tempOrder[i];
+                tempOrder[i] = tempOrder[j];
+                tempOrder[j] = temp;
+            }
+
+            valid = isValidOrder(tempOrder);
+
+            System.out.println(Arrays.toString(tempOrder));
+            if (valid)
+                System.out.println("The puzzle is valid");
+            else
+                System.out.println("The puzzle is NOT valid");
+
+        } while (!valid);
+
+        return tempOrder;
+    }
+
+    private boolean isValidOrder(int[] arr) {
+        int counter = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i] != 8 && arr[j] != 8 && arr[i] > arr[j]) {
+                    counter++;
+                }
+            }
+        }
+
+        return counter % 2 == 0; 
+    }
+
+    private void createPuzzleImages(int[] validOrder) {
+    puzzlePieces = new Design[numPieces];
+    imageList = new LinkedList();
+
+    for (int i = 0; i < numPieces; i++) {
+        int imgNum = validOrder[i] + 1;
+
+        Design piece = new Design("/media/img/" + imgNum + ".png");
+        puzzlePieces[i] = piece;
+
+        imageList.add(piece);
+    }
+}
+
+     private void displayPuzzle() {
 
         JPanel gridPanel = new JPanel(new GridLayout(3, 3));
 
-        gridPanel.add(one);
-        gridPanel.add(two);
-        gridPanel.add(three);
-        gridPanel.add(four);
-        gridPanel.add(five);
-        gridPanel.add(six);
-        gridPanel.add(seven);
-        gridPanel.add(eight);
-        gridPanel.add(nine);
+        Node current = imageList.head; 
+
+        while (current != null) {
+            gridPanel.add(current.data); 
+            current = current.next;
+        }
 
         utilities.getWhitePanel().add(gridPanel, BorderLayout.CENTER);
-
+        utilities.getWhitePanel().revalidate();
+        utilities.getWhitePanel().repaint();
     }
 }

@@ -5,7 +5,7 @@ public class Card extends JFrame{
     private TitleScreen title;
     private Menu menu;
     private HowToPlay howToPlay;
-    private CardLayout cardLayout;
+    private CardLayout cardLayout; 
     private Settings settings;
     private Credits credits;
     private Play play;
@@ -14,6 +14,7 @@ public class Card extends JFrame{
     protected static final int width = 500;
     protected static final int height = 600;
     protected static final Dimension SCREEN_SIZE = new Dimension(width, height);
+    
 
     public Card(){
         this.cardLayout = new CardLayout();
@@ -48,5 +49,9 @@ public class Card extends JFrame{
 
     public void showPanel(String name){
         cardLayout.show(container, name);
+    }
+
+     public Play getPlayPanel() {
+        return play;
     }
 }

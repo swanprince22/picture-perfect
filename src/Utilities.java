@@ -6,6 +6,7 @@ public class Utilities extends JPanel {
     protected JPanel leftPanel, rightPanel;
     protected JLabel play, howtoplay, settings, credits;
     Card mainFrame;
+    Play playGame;
 
     public Utilities(Card mainFrame) {
         this.mainFrame = mainFrame;
@@ -64,10 +65,11 @@ public class Utilities extends JPanel {
         whitePanel.add(leftPanel, BorderLayout.WEST);
         whitePanel.add(rightPanel, BorderLayout.CENTER);
 
+
         ButtonClicks.mouseClicked(settings, "Settings", mainFrame);
         ButtonClicks.mouseClicked(howtoplay, "How To Play", mainFrame);
         ButtonClicks.mouseClicked(credits, "Credits", mainFrame);
-        ButtonClicks.mouseClicked(play, "Play", mainFrame);
+        ButtonClicks.playButtonClicked(play, mainFrame);
     }
 
     public JPanel getRightPanel() {
