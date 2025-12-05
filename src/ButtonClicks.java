@@ -3,13 +3,13 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class ButtonClicks {
-    static SoundUtils sound = new SoundUtils();
+    
     public static void mouseClicked(JLabel label, String targetPanel, Card mainFrame) {
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainFrame.showPanel(targetPanel);
-                sound.clickSound();     
+                SoundUtils.clickSound();     
             }
 
             @Override
@@ -29,7 +29,7 @@ public class ButtonClicks {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainFrame.showPanel("Play");
-                sound.clickSound();
+                SoundUtils.clickSound();
                 Play.startGame();
             }
 

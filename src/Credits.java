@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Credits extends Design {
     JPanel leftPanel, rightPanel;
@@ -20,6 +21,17 @@ public class Credits extends Design {
     }
 
     public void rightPanelDisplay(){
-        
+        JLabel credits = new JLabel();
+        credits.setForeground(Color.PINK);
+        credits.setHorizontalAlignment(SwingConstants.CENTER);
+
+        credits.setText("<html><div style='text-align:center;'>"
+                + "<p><b>Music:</b> \"Spring · Minecraft\" by Mike Fortu & Carlos Ramirez</p>"
+                + "<p>℗ 2025 Microsoft Studios Music</p>"
+                + "<br>"
+                + "<p><b>Image: © Peanuts Worldwide LLC"
+                + "</div></html>");
+
+            utilities.getRightPanel().add(credits, BorderLayout.CENTER);
     }
 }

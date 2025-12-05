@@ -33,7 +33,6 @@ public class Solver {
         }
     }
 
-    // Convert current puzzle to int[] representation
     private int[] getCurrentState() {
         int[] state = new int[9];
         LinkedList imageList = Play.imageList;

@@ -12,8 +12,8 @@ public class Play extends Design {
     public static int numPieces = 9;
     public static LinkedList imageList;
 
-    public static int emptyIndex;       // blank tile position
-    public static JPanel gridPanel;     // dynamic refresh grid
+    public static int emptyIndex;       
+    public static JPanel gridPanel;     
 
     private static final int TILE_SIZE = 120;
     public static JLabel solve;

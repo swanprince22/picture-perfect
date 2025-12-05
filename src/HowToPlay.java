@@ -23,11 +23,15 @@ public class HowToPlay extends Design {
 
     public void rightPanelDisplay(){
         instructions = new JLabel();
-        instructions.setText("<html><div style='text-align: center;'>"
-                + "Rearrange the tiles to form the complete picture.<br>"
-                + "Click or tap a tile next to the empty space to move it.<br>"
-                + "Keep sliding the tiles until the image is complete.<br>"
-                + "</div></html>");
+        instructions.setForeground(Color.PINK);
+
+        instructions.setText("<html><div style='text-align:center;'>"
+        + "Click a tile next to the empty space to move it!<br>"
+        + "Slide the pieces until the picture is complete 💫<br>"
+        + "<br>"
+        + "Need help? Tap <b>Solve</b> and watch the magic happen ✨<br>"
+        + "</div></html>");
+
         
          utilities.getRightPanel().add(instructions, BorderLayout.CENTER);       
     }
