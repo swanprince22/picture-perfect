@@ -4,6 +4,7 @@ import javax.swing.*;
 public class Design extends JPanel {
     private Image bgImage;
     protected JPanel whitePanel;
+    public int tileNumber = -1;
 
     public Design(String imagePath) {
         try {

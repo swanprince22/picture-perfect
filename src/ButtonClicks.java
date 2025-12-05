@@ -9,9 +9,7 @@ public class ButtonClicks {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainFrame.showPanel(targetPanel);
-                sound.clickSound();
-
-                
+                sound.clickSound();     
             }
 
             @Override
