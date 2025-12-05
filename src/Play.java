@@ -4,37 +4,38 @@ import java.util.*;
 
 public class Play extends Design {
 
-    JLabel start;
-    Card mainFrame;
-    Utilities utilities;
-    Design[] puzzlePieces;
-    private int[] order;
-    private int numPieces = 9;
-    private LinkedList imageList;
+    public static JLabel start;
+    public static Card mainFrame;
+    public static Utilities utilities;
+    public static Design[] puzzlePieces;
+    public static int[] order;
+    public static int numPieces = 9;
+    public static LinkedList imageList;
 
-    private int emptyIndex;       // blank tile position
-    private JPanel gridPanel;     // dynamic refresh grid
+    public static int emptyIndex;       // blank tile position
+    public static JPanel gridPanel;     // dynamic refresh grid
 
     private static final int TILE_SIZE = 120;
+    public static JLabel solve;
 
-    public Play(Card mainFrame) {
+    public Play(Card mainFrameInstance) {
         super("/media/img/background.png");
-        this.mainFrame = mainFrame;
+        mainFrame = mainFrameInstance;
 
         utilities = new Utilities(mainFrame);
         utilities.displayWhitePanel();
-        this.add(utilities);
+        add(utilities);
 
-        this.setVisible(true);
+        setVisible(true);
     }
 
-    public void startGame(){
+    public static void startGame() {
         order = generateValidOrder();
         createPuzzleImages(order);
         displayPuzzle();
     }
 
-    private int[] generateValidOrder() {
+    private static int[] generateValidOrder() {
         Random r = new Random();
         int[] tempOrder = new int[numPieces];
         boolean valid;
@@ -64,7 +65,7 @@ public class Play extends Design {
         return tempOrder;
     }
 
-    private boolean isValidOrder(int[] arr) {
+    private static boolean isValidOrder(int[] arr) {
         int counter = 0;
         for (int i = 0; i < arr.length; i++) {
             for (int j = i + 1; j < arr.length; j++) {
@@ -76,8 +77,7 @@ public class Play extends Design {
         return counter % 2 == 0;
     }
 
-    // Creates tiles and saves blank index
-    private void createPuzzleImages(int[] validOrder) {
+    private static void createPuzzleImages(int[] validOrder) {
         puzzlePieces = new Design[numPieces];
         imageList = new LinkedList();
 
@@ -91,7 +91,6 @@ public class Play extends Design {
                 int imgNum = imgIndex + 1;
                 Design piece = new Design("/media/img/" + imgNum + ".png");
 
-                // IMPORTANT: store tile number
                 piece.tileNumber = imgNum;
 
                 piece.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
@@ -106,13 +105,13 @@ public class Play extends Design {
         }
     }
 
-    // Adds click movement to each tile
-    private void addMoveListener(Design piece) {
+    private static void addMoveListener(Design piece) {
         piece.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 int clickedIndex = imageList.indexOf(piece);
 
                 if (isAdjacent(clickedIndex, emptyIndex)) {
+                    // Swap nodes in linked list
                     imageList.swap(clickedIndex, emptyIndex);
                     emptyIndex = clickedIndex;
                     refreshGrid();
@@ -123,8 +122,7 @@ public class Play extends Design {
         });
     }
 
-    // Adjacent check (no diagonals allowed)
-    private boolean isAdjacent(int index1, int index2) {
+    private static boolean isAdjacent(int index1, int index2) {
         int row1 = index1 / 3;
         int col1 = index1 % 3;
         int row2 = index2 / 3;
@@ -133,8 +131,7 @@ public class Play extends Design {
         return (Math.abs(row1 - row2) + Math.abs(col1 - col2)) == 1;
     }
 
-    // Draws puzzle for first time
-    private void displayPuzzle() {
+    private static void displayPuzzle() {
         gridPanel = new JPanel(new GridLayout(3, 3, 0, 0));
 
         Node current = imageList.head;
@@ -151,21 +148,42 @@ public class Play extends Design {
             current = current.next;
         }
 
+            if (solve != null) {
+            utilities.remove(solve);
+        }
+
+        solve = new JLabel("Solve", SwingConstants.CENTER);
+        solve.setEnabled(true);               
+        solve.setText("Solve");               
+        solve.setForeground(Color.BLACK);     
+        solve.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        solve.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                solve.setEnabled(false);
+                solve.setText("Solving...");
+
+                new Thread(() -> {
+                    Solver solver = new Solver();
+                    solver.solve(mainFrame, "Menu");
+                }).start();
+            }
+        });
+
         utilities.getWhitePanel().setLayout(new BorderLayout());
         utilities.getWhitePanel().add(gridPanel, BorderLayout.CENTER);
-        utilities.getWhitePanel().revalidate();
-        utilities.getWhitePanel().repaint();
-    }
+        utilities.add(solve, BorderLayout.SOUTH);
 
-    // ✅ FIXED WIN CHECK (ascending order)
-    private boolean isWin() {
+        utilities.revalidate();
+        utilities.repaint();
+}
+
+    static boolean isWin() {
         Node current = imageList.head;
         int expected = 1;
         int position = 0;
 
         while (current != null) {
-
-            // Last tile must be blank
             if (position == 8) {
                 if (current.data != null) return false;
                 break;
@@ -175,7 +193,6 @@ public class Play extends Design {
 
             Design piece = (Design) current.data;
 
-            // Tiles must be 1,2,3,4,5,6,7,8 in order
             if (piece.tileNumber != expected) return false;
 
             expected++;
@@ -187,15 +204,14 @@ public class Play extends Design {
         return true;
     }
 
-    private void checkWin(Card mainFrame, String target){
-        if (isWin()){
-            JOptionPane.showMessageDialog(this, "🎉 Congratulations! You solved the puzzle!");
+    private static void checkWin(Card mainFrame, String target) {
+        if (isWin()) {
+            JOptionPane.showMessageDialog(null, "Congratulations! You solved the puzzle!");
             mainFrame.showPanel(target);
         }
     }
 
-    // Redraws puzzle after every move
-    private void refreshGrid() {
+    public static void refreshGrid() {
         gridPanel.removeAll();
 
         Node current = imageList.head;

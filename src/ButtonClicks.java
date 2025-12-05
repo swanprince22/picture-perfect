@@ -30,7 +30,7 @@ public class ButtonClicks {
             public void mouseClicked(MouseEvent e) {
                 mainFrame.showPanel("Play");
                 sound.clickSound();
-                mainFrame.getPlayPanel().startGame();
+                Play.startGame();
             }
 
             @Override

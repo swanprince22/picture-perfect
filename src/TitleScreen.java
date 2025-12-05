@@ -15,12 +15,12 @@ public class TitleScreen extends Design {
         utilities.displayWhitePanel();
         this.add(utilities);
 
-        displayBottom();
+        display();
         
         this.setVisible(true);
     }
 
-    public void displayBottom(){
+    public void display(){
         design = new Design("/media/img/title.png");
         utilities.getWhitePanel().add(design, BorderLayout.CENTER);
         

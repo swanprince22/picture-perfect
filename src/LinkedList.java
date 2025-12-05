@@ -20,38 +20,52 @@ public void add(Design data){
     current.next = newNode;
 }
 
-public int indexOf(Design data) {
-    Node current = head;
-    int index = 0;
+ public int indexOf(Design data) {
+        Node current = head;
+        int index = 0;
 
-    while (current != null) {
-        if (current.data == data)
-            return index;
+        while (current != null) {
+            if (current.data == data)
+                return index;
 
-        current = current.next;
-        index++;
+            current = current.next;
+            index++;
+        }
+
+        return -1;
     }
 
-    return -1;
-}
+    public void swap(int index1, int index2) {
+        if (index1 == index2) return;
 
-public void swap(int index1, int index2) {
-    if (index1 == index2) return;
+        Node prev1 = null, prev2 = null;
+        Node node1 = head, node2 = head;
 
-    Node node1 = null, node2 = null, current = head;
-    int index = 0;
+        int i = 0;
 
-    while (current != null) {
-        if (index == index1) node1 = current;
-        if (index == index2) node2 = current;
-        current = current.next;
-        index++;
+        while (node1 != null && i < index1) {
+            prev1 = node1;
+            node1 = node1.next;
+            i++;
+        }
+
+        i = 0;
+        while (node2 != null && i < index2) {
+            prev2 = node2;
+            node2 = node2.next;
+            i++;
+        }
+
+        if (node1 == null || node2 == null) return;
+
+        if (prev1 != null) prev1.next = node2;
+        else head = node2;
+
+        if (prev2 != null) prev2.next = node1;
+        else head = node1;
+
+        Node temp = node1.next;
+        node1.next = node2.next;
+        node2.next = temp;
     }
-
-    if (node1 != null && node2 != null) {
-        Design temp = node1.data;
-        node1.data = node2.data;
-        node2.data = temp;
-    }
-}
 }
