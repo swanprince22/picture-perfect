@@ -68,4 +68,8 @@ public void add(Design data){
         node1.next = node2.next;
         node2.next = temp;
     }
+
+    public void clear() {
+        head = null;
+    }
 }

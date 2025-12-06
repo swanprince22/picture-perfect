@@ -40,7 +40,7 @@ public class Card extends JFrame{
 
         cardLayout.show(container, "Title");
 
-        SoundUtils.bgMusic(55);
+        SoundUtils.bgMusic(40);
 
         this.add(container);
         this.pack();

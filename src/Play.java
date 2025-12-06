@@ -13,7 +13,7 @@ public class Play extends Design {
     public static LinkedList imageList;
 
     public static int emptyIndex;       
-    public static JPanel gridPanel;     
+    public static JPanel gridPanel;      
 
     private static final int TILE_SIZE = 120;
     public static JLabel solve;
@@ -30,6 +30,20 @@ public class Play extends Design {
     }
 
     public static void startGame() {
+        // Clear previous puzzle if any
+        if (gridPanel != null) {
+            gridPanel.removeAll();
+        }
+        if (imageList != null) {
+            imageList.clear();
+        }
+
+        // Re-enable solve button if needed
+        if (solve != null) {
+            solve.setEnabled(true);
+            solve.setText("Solve");
+        }
+
         order = generateValidOrder();
         createPuzzleImages(order);
         displayPuzzle();
@@ -90,7 +104,6 @@ public class Play extends Design {
             } else {
                 int imgNum = imgIndex + 1;
                 Design piece = new Design("/media/img/" + imgNum + ".png");
-
                 piece.tileNumber = imgNum;
 
                 piece.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
@@ -111,7 +124,6 @@ public class Play extends Design {
                 int clickedIndex = imageList.indexOf(piece);
 
                 if (isAdjacent(clickedIndex, emptyIndex)) {
-                    // Swap nodes in linked list
                     imageList.swap(clickedIndex, emptyIndex);
                     emptyIndex = clickedIndex;
                     refreshGrid();
@@ -132,51 +144,58 @@ public class Play extends Design {
     }
 
     private static void displayPuzzle() {
-        gridPanel = new JPanel(new GridLayout(3, 3, 0, 0));
+    // Create a new panel for the puzzle
+    gridPanel = new JPanel(new GridLayout(3, 3, 0, 0));
 
-        Node current = imageList.head;
+    Node current = imageList.head;
 
-        while (current != null) {
-            if (current.data == null) {
-                JPanel blank = new JPanel();
-                blank.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
-                blank.setOpaque(false);
-                gridPanel.add(blank);
-            } else {
-                gridPanel.add(current.data);
-            }
-            current = current.next;
+    // Add all tiles or blank panels
+    while (current != null) {
+        if (current.data == null) {
+            JPanel blank = new JPanel();
+            blank.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
+            blank.setOpaque(false);
+            gridPanel.add(blank);
+        } else {
+            gridPanel.add(current.data);
         }
+        current = current.next;
+    }
 
-            if (solve != null) {
-            utilities.remove(solve);
+    // Remove old solve button if it exists
+    if (solve != null) {
+        utilities.remove(solve);
+    }
+
+    // Create Solve button
+    solve = new JLabel("Solve", SwingConstants.CENTER);
+    solve.setEnabled(true);
+    solve.setForeground(Color.BLACK);
+    solve.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    solve.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent e) {
+            solve.setEnabled(false);
+            solve.setText("Solving...");
+
+            new Thread(() -> {
+                Solver solver = new Solver();
+                solver.solve(mainFrame, "Menu");
+            }).start();
         }
+    });
 
-        solve = new JLabel("Solve", SwingConstants.CENTER);
-        solve.setEnabled(true);               
-        solve.setText("Solve");               
-        solve.setForeground(Color.BLACK);     
-        solve.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    // Use BorderLayout and add panel + solve button
+    JPanel whitePanel = utilities.getWhitePanel();
+    whitePanel.removeAll();  // Remove old content
+    whitePanel.setLayout(new BorderLayout());
+    whitePanel.add(gridPanel, BorderLayout.CENTER);
+    utilities.add(solve, BorderLayout.SOUTH);
 
-        solve.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                solve.setEnabled(false);
-                solve.setText("Solving...");
-
-                new Thread(() -> {
-                    Solver solver = new Solver();
-                    solver.solve(mainFrame, "Menu");
-                }).start();
-            }
-        });
-
-        utilities.getWhitePanel().setLayout(new BorderLayout());
-        utilities.getWhitePanel().add(gridPanel, BorderLayout.CENTER);
-        utilities.add(solve, BorderLayout.SOUTH);
-
-        utilities.revalidate();
-        utilities.repaint();
+    // Important: Revalidate and repaint to update the UI
+    whitePanel.revalidate();
+    whitePanel.repaint();
 }
+
 
     static boolean isWin() {
         Node current = imageList.head;
