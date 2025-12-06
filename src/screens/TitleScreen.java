@@ -1,5 +1,11 @@
+package screens;
 import java.awt.*;
 import javax.swing.*;
+
+import utils.ButtonClicks;
+import utils.Card;
+import utils.Design;
+import utils.Utilities;
 
 public class TitleScreen extends Design {
     JLabel start;

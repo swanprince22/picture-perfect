@@ -1,4 +1,9 @@
+package screens;
 import javax.swing.*;
+
+import utils.Card;
+import utils.Design;
+import utils.Utilities;
 
 public class Menu extends Design {
     JPanel leftPanel, rightPanel;

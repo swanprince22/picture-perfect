@@ -1,3 +1,6 @@
+package game;
+import utils.Design;
+
 public class LinkedList {
 Node head;
 public LinkedList(){

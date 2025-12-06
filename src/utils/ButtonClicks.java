@@ -1,6 +1,9 @@
+package utils;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import game.Play;
 
 public class ButtonClicks {
     

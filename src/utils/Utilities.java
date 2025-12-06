@@ -1,5 +1,8 @@
+package utils;
 import javax.swing.*;
 import java.awt.*;
+
+import game.Play;
 
 public class Utilities extends JPanel {
     protected JPanel whitePanel;

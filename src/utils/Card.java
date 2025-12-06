@@ -1,5 +1,15 @@
+package utils;
+
 import java.awt.*;
 import javax.swing.*;
+
+import screens.Credits;
+import screens.HowToPlay;
+import screens.Menu;
+import screens.Settings;
+import screens.TitleScreen;
+import game.Play;
+
 
 public class Card extends JFrame{
     private TitleScreen title;
@@ -40,7 +50,7 @@ public class Card extends JFrame{
 
         cardLayout.show(container, "Title");
 
-        SoundUtils.bgMusic(40);
+        SoundUtils.bgMusic(50);
 
         this.add(container);
         this.pack();

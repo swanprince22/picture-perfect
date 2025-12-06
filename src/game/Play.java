@@ -1,5 +1,11 @@
+package game;
 import java.awt.*;
 import javax.swing.*;
+
+import utils.Card;
+import utils.Design;
+import utils.Utilities;
+
 import java.util.*;
 
 public class Play extends Design {
@@ -30,7 +36,6 @@ public class Play extends Design {
     }
 
     public static void startGame() {
-        // Clear previous puzzle if any
         if (gridPanel != null) {
             gridPanel.removeAll();
         }
@@ -38,7 +43,6 @@ public class Play extends Design {
             imageList.clear();
         }
 
-        // Re-enable solve button if needed
         if (solve != null) {
             solve.setEnabled(true);
             solve.setText("Solve");
@@ -144,12 +148,11 @@ public class Play extends Design {
     }
 
     private static void displayPuzzle() {
-    // Create a new panel for the puzzle
+
     gridPanel = new JPanel(new GridLayout(3, 3, 0, 0));
 
     Node current = imageList.head;
 
-    // Add all tiles or blank panels
     while (current != null) {
         if (current.data == null) {
             JPanel blank = new JPanel();
@@ -162,12 +165,12 @@ public class Play extends Design {
         current = current.next;
     }
 
-    // Remove old solve button if it exists
+
     if (solve != null) {
         utilities.remove(solve);
     }
 
-    // Create Solve button
+    
     solve = new JLabel("Solve", SwingConstants.CENTER);
     solve.setEnabled(true);
     solve.setForeground(Color.BLACK);
@@ -184,14 +187,14 @@ public class Play extends Design {
         }
     });
 
-    // Use BorderLayout and add panel + solve button
+
     JPanel whitePanel = utilities.getWhitePanel();
-    whitePanel.removeAll();  // Remove old content
+    whitePanel.removeAll();
     whitePanel.setLayout(new BorderLayout());
     whitePanel.add(gridPanel, BorderLayout.CENTER);
     utilities.add(solve, BorderLayout.SOUTH);
 
-    // Important: Revalidate and repaint to update the UI
+
     whitePanel.revalidate();
     whitePanel.repaint();
 }

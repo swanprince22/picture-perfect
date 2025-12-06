@@ -1,4 +1,10 @@
+package screens;
 import javax.swing.*;
+
+import utils.Card;
+import utils.Design;
+import utils.Utilities;
+
 import java.awt.*;
 
 public class Credits extends Design {

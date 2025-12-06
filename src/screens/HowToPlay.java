@@ -1,5 +1,10 @@
+package screens;
 import java.awt.*;
 import javax.swing.*;
+
+import utils.Card;
+import utils.Design;
+import utils.Utilities;
 
 public class HowToPlay extends Design {
     JPanel leftPanel, rightPanel;

@@ -1,5 +1,9 @@
+package game;
 import java.util.*;
 import javax.swing.*;
+
+import utils.Card;
+import utils.Design;
 
 public class Solver {
 
